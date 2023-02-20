@@ -1,0 +1,93 @@
+---
+title: "Scraping & Wrangling in R:\nMultnomah County Library Hours"
+author: "Charles Hanks" 
+output: html_document
+date: "2023-02-18"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+I go to the public library often to print or work in a quiet space without feeling the the obligation of commerce. This is a simple demonstration of craping useful information from a public website, and then organizing it into a table in R. 
+
+"Having fun isn't hard, when you've got a library card!" 
+
+-Arthur and Friends 
+
+```{r}
+library(tidyverse)
+library(rvest)
+library(stringr)
+library(lubridate)
+library(hms)
+```
+
+
+```{r}
+#url to scrape from
+result = read_html('https://multcolib.org/hours-and-locations')
+
+#library names and addresses 
+lib_names = result %>% 
+  html_nodes('.p-name') %>% html_text()
+
+lib_addresses = result %>% 
+  html_nodes('.p-street-address') %>% html_text()
+
+```
+
+```{r}
+#hours
+hours = result %>% 
+  html_nodes('.hours') %>% 
+    html_text()
+
+#removing html line break characters 
+hours = (str_split(hours, "\r\n")) 
+
+#removing "Weekly Hours" string"
+hours = lapply(hours, function(x) x[-1])
+
+hours = data.frame(hours)
+
+#temporary colnames
+colnames(hours) = c(1:22)
+
+#removing day of week from time interval 
+hours = hours %>% 
+  mutate(across(everything(),~str_remove(.,"\\w+day")))
+
+
+hours2 = hours %>% gather(key = "key", value = "value", 1:22)
+
+#adding day of week per open hours 
+hours2$day = rep(c("monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", NA),22)
+
+#spreading out days of week
+hours3 = hours2 %>% spread(key = day, value = value) 
+
+#converting index to double 
+hours3$key = as.numeric(hours3$key)
+
+hours3 = hours3[,c("key","monday","tuesday","wednesday","thursday","friday","saturday","sunday")] %>% arrange(key)
+
+#bringing in library names
+hours3$library = lib_names
+
+#renaming key as id 
+hours3 = hours3 %>% rename(id = key)
+
+ds = hours3
+
+#adding library addresses: 
+ds$address = lib_addresses
+
+ds = ds[,c("id", "library","address","monday","tuesday","wednesday","thursday","friday","saturday","sunday")]
+        
+ds
+
+```
+
+
