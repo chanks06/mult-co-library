@@ -364,9 +364,11 @@ County Library Hours</h1>
 </div>
 
 
+<div id="when-is-the-library-open" class="section level1">
+<h1>When is the Library Open?</h1>
 <p>I go to the public library often to print or work in a quiet space
 without feeling the the obligation of commerce. This is a simple
-demonstration of craping useful information from a public website, and
+demonstration of scraping useful information from a public website, and
 then organizing it into a table in R.</p>
 <p>“Having fun isn’t hard, when you’ve got a library card!”</p>
 <p>-Arthur and Friends</p>
@@ -401,6 +403,7 @@ library(lubridate)</code></pre>
 ## The following object is masked from &#39;package:lubridate&#39;:
 ## 
 ##     hms</code></pre>
+<p>Scraping data from Multnomah County website:</p>
 <pre class="r"><code>#url to scrape from
 result = read_html(&#39;https://multcolib.org/hours-and-locations&#39;)
 
@@ -410,6 +413,7 @@ lib_names = result %&gt;%
 
 lib_addresses = result %&gt;% 
   html_nodes(&#39;.p-street-address&#39;) %&gt;% html_text()</code></pre>
+<p>Creating the table:</p>
 <pre class="r"><code>#hours
 hours = result %&gt;% 
   html_nodes(&#39;.hours&#39;) %&gt;% 
@@ -437,7 +441,8 @@ hours2 = hours %&gt;% gather(key = &quot;key&quot;, value = &quot;value&quot;, 1
 hours2$day = rep(c(&quot;monday&quot;, &quot;tuesday&quot;, &quot;wednesday&quot;, &quot;thursday&quot;, &quot;friday&quot;, &quot;saturday&quot;, &quot;sunday&quot;, NA),22)
 
 #spreading out days of week
-hours3 = hours2 %&gt;% spread(key = day, value = value) 
+hours3 = hours2 %&gt;% 
+            spread(key = day, value = value) 
 
 #converting index to double 
 hours3$key = as.numeric(hours3$key)
@@ -485,7 +490,7 @@ ds</code></pre>
 ## 1     12 pm - 8 pm      12 pm - 8 pm      10 am - 6 pm      10 am - 6 pm
 ## 2     10 am - 6 pm      10 am - 8 pm      12 pm - 8 pm      12 pm - 8 pm
 ## 3     12 pm - 8 pm      12 pm - 8 pm      10 am - 6 pm      10 am - 6 pm
-## 4     10 am - 6 pm      12 pm - 8 pm      10 am - 8 pm      10 am - 6 pm
+## 4           closed            closed            closed            closed
 ## 5     12 pm - 8 pm      12 pm - 8 pm      10 am - 6 pm      10 am - 6 pm
 ## 6     12 pm - 8 pm      12 pm - 8 pm      10 am - 6 pm      10 am - 6 pm
 ## 7     10 am - 6 pm      10 am - 8 pm      12 pm - 8 pm      12 pm - 8 pm
@@ -505,10 +510,10 @@ ds</code></pre>
 ## 21    12 pm - 8 pm      12 pm - 8 pm      10 am - 6 pm      10 am - 6 pm
 ## 22    12 pm - 8 pm      12 pm - 8 pm      10 am - 6 pm      10 am - 6 pm
 ##               friday          saturday            sunday
-## 1       10 am - 6 pm      10 am - 6 pm      12 pm - 5 pm
+## 1       10 am - 6 pm            closed            closed
 ## 2       10 am - 6 pm      10 am - 6 pm      10 am - 5 pm
 ## 3       10 am - 6 pm      10 am - 6 pm      12 pm - 5 pm
-## 4       10 am - 6 pm      10 am - 6 pm      10 am - 5 pm
+## 4             closed            closed            closed
 ## 5       10 am - 6 pm      10 am - 6 pm      12 pm - 5 pm
 ## 6       10 am - 6 pm      10 am - 6 pm      12 pm - 5 pm
 ## 7       10 am - 6 pm      10 am - 6 pm      10 am - 5 pm
@@ -527,6 +532,7 @@ ds</code></pre>
 ## 20            closed            closed            closed
 ## 21      10 am - 6 pm      10 am - 6 pm      12 pm - 5 pm
 ## 22      10 am - 6 pm      10 am - 6 pm      12 pm - 5 pm</code></pre>
+</div>
 
 
 
