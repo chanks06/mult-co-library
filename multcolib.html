@@ -13,7 +13,7 @@
 
 <meta name="date" content="2023-02-18" />
 
-<title>Scraping &amp; Wrangling in R: Multnomah County Library Hours</title>
+<title>Scraping &amp; Wrangling in R:Multnomah County Library Hours</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -356,7 +356,7 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Scraping &amp; Wrangling in R: Multnomah
+<h1 class="title toc-ignore">Scraping &amp; Wrangling in R:Multnomah
 County Library Hours</h1>
 <h4 class="author">Charles Hanks</h4>
 <h4 class="date">2023-02-18</h4>
@@ -364,46 +364,16 @@ County Library Hours</h1>
 </div>
 
 
-<div id="when-is-the-library-open" class="section level1">
-<h1>When is the Library Open?</h1>
+<div id="when-is-the-library-open" class="section level2">
+<h2>When is the Library Open?</h2>
 <p>I go to the public library often to print or work in a quiet space
 without feeling the the obligation of commerce. This is a simple
 demonstration of scraping useful information from a public website, and
-then organizing it into a table in R.</p>
+then cleaning and wrangling the data into one data frame in R.</p>
 <p>“Having fun isn’t hard, when you’ve got a library card!”</p>
 <p>-Arthur and Friends</p>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.2 ──
-## ✔ ggplot2 3.4.0      ✔ purrr   0.3.5 
-## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
-## ✔ tidyr   1.2.1      ✔ stringr 1.4.1 
-## ✔ readr   2.1.2      ✔ forcats 0.5.2 
-## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>library(rvest)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;rvest&#39;
-## 
-## The following object is masked from &#39;package:readr&#39;:
-## 
-##     guess_encoding</code></pre>
-<pre class="r"><code>library(stringr)
-library(lubridate)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;lubridate&#39;
-## 
-## The following objects are masked from &#39;package:base&#39;:
-## 
-##     date, intersect, setdiff, union</code></pre>
-<pre class="r"><code>library(hms)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;hms&#39;
-## 
-## The following object is masked from &#39;package:lubridate&#39;:
-## 
-##     hms</code></pre>
-<p>Scraping data from Multnomah County website:</p>
+<div id="scraping-elements-from-multnomah-county-website" class="section level3">
+<h3>Scraping elements from Multnomah County website:</h3>
 <pre class="r"><code>#url to scrape from
 result = read_html(&#39;https://multcolib.org/hours-and-locations&#39;)
 
@@ -412,20 +382,19 @@ lib_names = result %&gt;%
   html_nodes(&#39;.p-name&#39;) %&gt;% html_text()
 
 lib_addresses = result %&gt;% 
-  html_nodes(&#39;.p-street-address&#39;) %&gt;% html_text()</code></pre>
-<p>Creating the table:</p>
-<pre class="r"><code>#hours
+  html_nodes(&#39;.p-street-address&#39;) %&gt;% html_text()
+
 hours = result %&gt;% 
   html_nodes(&#39;.hours&#39;) %&gt;% 
-    html_text()
-
-#removing html line break characters 
+    html_text()</code></pre>
+</div>
+<div id="cleaning-the-data" class="section level3">
+<h3>Cleaning the data:</h3>
+<pre class="r"><code>#removing html line break characters 
 hours = (str_split(hours, &quot;\r\n&quot;)) 
 
 #removing &quot;Weekly Hours&quot; string&quot;
-hours = lapply(hours, function(x) x[-1])
-
-hours = data.frame(hours)
+hours = data.frame(lapply(hours, function(x) x[-1]))
 
 #temporary colnames
 colnames(hours) = c(1:22)
@@ -455,14 +424,31 @@ hours3$library = lib_names
 #renaming key as id 
 hours3 = hours3 %&gt;% rename(id = key)
 
-ds = hours3
-
 #adding library addresses: 
-ds$address = lib_addresses
+hours3$address = lib_addresses
 
-ds = ds[,c(&quot;id&quot;, &quot;library&quot;,&quot;address&quot;,&quot;monday&quot;,&quot;tuesday&quot;,&quot;wednesday&quot;,&quot;thursday&quot;,&quot;friday&quot;,&quot;saturday&quot;,&quot;sunday&quot;)]
-        
-ds</code></pre>
+hours3 = hours3[,c(&quot;id&quot;, &quot;library&quot;,&quot;address&quot;,&quot;monday&quot;,&quot;tuesday&quot;,&quot;wednesday&quot;,&quot;thursday&quot;,&quot;friday&quot;,&quot;saturday&quot;,&quot;sunday&quot;)]</code></pre>
+</div>
+</div>
+<div id="now-the-data-is-in-one-table-however-it-is-not-tidy-enough.-we-will-separate-opening-and-closing-times-of-each-library" class="section level2">
+<h2>Now the data is in one table, however it is not tidy enough. We will
+separate opening and closing times of each library:</h2>
+<pre class="r"><code>#converting &quot;closed&quot; to NAs 
+days = c(&quot;monday&quot;,&quot;tuesday&quot;,&quot;wednesday&quot;,&quot;thursday&quot;,&quot;friday&quot;,&quot;saturday&quot;,&quot;sunday&quot;)
+hours3[days] = lapply(hours3[days], gsub, pattern = &quot;closed&quot;, replacement = NA)
+
+#splitting the open and close times into 2 cols: 
+for(i in days){
+  hours3 = hours3 %&gt;% separate(i, into = c(paste0(i,&quot;.open&quot;), paste0(i,&quot;.close&quot;)),sep = &quot; - &quot;) 
+}
+
+days.oc = colnames(hours3)[4:17]
+
+#formatting times 
+hours3[days.oc] = lapply(hours3[days.oc], strptime, &quot;%I %p&quot;)
+hours3[days.oc] = lapply(hours3[days.oc], format, &quot;%H:%M&quot;)
+
+hours3</code></pre>
 <pre><code>##    id                       library                           address
 ## 1   1                Albina Library               216 NE Knott Street
 ## 2   2               Belmont Library 1038 SE César E. Chávez Boulevard
@@ -486,52 +472,75 @@ ds</code></pre>
 ## 20 20 The Title Wave Used Bookstore               216 NE Knott Street
 ## 21 21             Troutdale Library          2451 SW Cherry Park Road
 ## 22 22             Woodstock Library               6008 SE 49th Avenue
-##             monday           tuesday         wednesday          thursday
-## 1     12 pm - 8 pm      12 pm - 8 pm      10 am - 6 pm      10 am - 6 pm
-## 2     10 am - 6 pm      10 am - 8 pm      12 pm - 8 pm      12 pm - 8 pm
-## 3     12 pm - 8 pm      12 pm - 8 pm      10 am - 6 pm      10 am - 6 pm
-## 4           closed            closed            closed            closed
-## 5     12 pm - 8 pm      12 pm - 8 pm      10 am - 6 pm      10 am - 6 pm
-## 6     12 pm - 8 pm      12 pm - 8 pm      10 am - 6 pm      10 am - 6 pm
-## 7     10 am - 6 pm      10 am - 8 pm      12 pm - 8 pm      12 pm - 8 pm
-## 8     10 am - 6 pm      10 am - 8 pm      12 pm - 8 pm      12 pm - 8 pm
-## 9           closed            closed            closed            closed
-## 10    10 am - 6 pm      10 am - 8 pm      12 pm - 8 pm      12 pm - 8 pm
-## 11          closed            closed            closed            closed
-## 12    12 pm - 8 pm      12 pm - 8 pm      10 am - 6 pm      10 am - 6 pm
-## 13     9 am - 5 pm       9 am - 5 pm       9 am - 5 pm       9 am - 5 pm
-## 14          closed            closed            closed            closed
-## 15    12 pm - 8 pm      12 pm - 8 pm      10 am - 6 pm      10 am - 6 pm
-## 16    12 pm - 8 pm      12 pm - 8 pm      10 am - 6 pm      10 am - 6 pm
-## 17    12 pm - 8 pm      12 pm - 8 pm      10 am - 6 pm      10 am - 6 pm
-## 18    12 pm - 8 pm      12 pm - 8 pm      10 am - 6 pm      10 am - 6 pm
-## 19    12 pm - 8 pm      12 pm - 8 pm      10 am - 6 pm      10 am - 6 pm
-## 20          closed            closed            closed            closed
-## 21    12 pm - 8 pm      12 pm - 8 pm      10 am - 6 pm      10 am - 6 pm
-## 22    12 pm - 8 pm      12 pm - 8 pm      10 am - 6 pm      10 am - 6 pm
-##               friday          saturday            sunday
-## 1       10 am - 6 pm            closed            closed
-## 2       10 am - 6 pm      10 am - 6 pm      10 am - 5 pm
-## 3       10 am - 6 pm      10 am - 6 pm      12 pm - 5 pm
-## 4             closed            closed            closed
-## 5       10 am - 6 pm      10 am - 6 pm      12 pm - 5 pm
-## 6       10 am - 6 pm      10 am - 6 pm      12 pm - 5 pm
-## 7       10 am - 6 pm      10 am - 6 pm      10 am - 5 pm
-## 8       10 am - 6 pm      10 am - 6 pm      10 am - 5 pm
-## 9             closed            closed            closed
-## 10      10 am - 6 pm      10 am - 6 pm      10 am - 5 pm
-## 11            closed            closed            closed
-## 12      10 am - 6 pm      10 am - 6 pm      12 pm - 5 pm
-## 13       9 am - 5 pm            closed            closed
-## 14            closed            closed            closed
-## 15      10 am - 6 pm      10 am - 6 pm      12 pm - 5 pm
-## 16      10 am - 6 pm      10 am - 6 pm      12 pm - 5 pm
-## 17      10 am - 6 pm      10 am - 6 pm      12 pm - 5 pm
-## 18      10 am - 6 pm      10 am - 6 pm      12 pm - 5 pm
-## 19      10 am - 6 pm      10 am - 6 pm      12 pm - 5 pm
-## 20            closed            closed            closed
-## 21      10 am - 6 pm      10 am - 6 pm      12 pm - 5 pm
-## 22      10 am - 6 pm      10 am - 6 pm      12 pm - 5 pm</code></pre>
+##    monday.open monday.close tuesday.open tuesday.close wednesday.open
+## 1         &lt;NA&gt;         &lt;NA&gt;        12:00         20:00          10:00
+## 2        10:00        18:00        10:00         20:00          12:00
+## 3        12:00        20:00        12:00         20:00          10:00
+## 4         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;          &lt;NA&gt;           &lt;NA&gt;
+## 5        12:00        20:00        12:00         20:00          10:00
+## 6        12:00        20:00        12:00         20:00          10:00
+## 7        10:00        18:00        10:00         20:00          12:00
+## 8        10:00        18:00        10:00         20:00          12:00
+## 9         &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;          &lt;NA&gt;           &lt;NA&gt;
+## 10       10:00        18:00        10:00         20:00          12:00
+## 11        &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;          &lt;NA&gt;           &lt;NA&gt;
+## 12       12:00        20:00        12:00         20:00          10:00
+## 13       09:00        17:00        09:00         17:00          09:00
+## 14        &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;          &lt;NA&gt;           &lt;NA&gt;
+## 15       12:00        20:00        12:00         20:00          10:00
+## 16       12:00        20:00        12:00         20:00          10:00
+## 17       12:00        20:00        12:00         20:00          10:00
+## 18       12:00        20:00        12:00         20:00          10:00
+## 19       12:00        20:00        12:00         20:00          10:00
+## 20        &lt;NA&gt;         &lt;NA&gt;         &lt;NA&gt;          &lt;NA&gt;           &lt;NA&gt;
+## 21       12:00        20:00        12:00         20:00          10:00
+## 22       12:00        20:00        12:00         20:00          10:00
+##    wednesday.close thursday.open thursday.close friday.open friday.close
+## 1            18:00         10:00          18:00       10:00        18:00
+## 2            20:00         12:00          20:00       10:00        18:00
+## 3            18:00         10:00          18:00       10:00        18:00
+## 4             &lt;NA&gt;          &lt;NA&gt;           &lt;NA&gt;        &lt;NA&gt;         &lt;NA&gt;
+## 5            18:00         10:00          18:00       10:00        18:00
+## 6            18:00         10:00          18:00       10:00        18:00
+## 7            20:00         12:00          20:00       10:00        18:00
+## 8            20:00         12:00          20:00       10:00        18:00
+## 9             &lt;NA&gt;          &lt;NA&gt;           &lt;NA&gt;        &lt;NA&gt;         &lt;NA&gt;
+## 10           20:00         12:00          20:00       10:00        18:00
+## 11            &lt;NA&gt;          &lt;NA&gt;           &lt;NA&gt;        &lt;NA&gt;         &lt;NA&gt;
+## 12           18:00         10:00          18:00       10:00        18:00
+## 13           17:00         09:00          17:00       09:00        17:00
+## 14            &lt;NA&gt;          &lt;NA&gt;           &lt;NA&gt;        &lt;NA&gt;         &lt;NA&gt;
+## 15           18:00         10:00          18:00       10:00        18:00
+## 16           18:00         10:00          18:00       10:00        18:00
+## 17           18:00         10:00          18:00       10:00        18:00
+## 18           18:00         10:00          18:00       10:00        18:00
+## 19           18:00         10:00          18:00       10:00        18:00
+## 20            &lt;NA&gt;          &lt;NA&gt;           &lt;NA&gt;        &lt;NA&gt;         &lt;NA&gt;
+## 21           18:00         10:00          18:00       10:00        18:00
+## 22           18:00         10:00          18:00       10:00        18:00
+##    saturday.open saturday.close sunday.open sunday.close
+## 1           &lt;NA&gt;           &lt;NA&gt;        &lt;NA&gt;         &lt;NA&gt;
+## 2          10:00          18:00       10:00        17:00
+## 3          10:00          18:00       12:00        17:00
+## 4           &lt;NA&gt;           &lt;NA&gt;        &lt;NA&gt;         &lt;NA&gt;
+## 5          10:00          18:00       12:00        17:00
+## 6          10:00          18:00       12:00        17:00
+## 7          10:00          18:00       10:00        17:00
+## 8          10:00          18:00       10:00        17:00
+## 9           &lt;NA&gt;           &lt;NA&gt;        &lt;NA&gt;         &lt;NA&gt;
+## 10         10:00          18:00       10:00        17:00
+## 11          &lt;NA&gt;           &lt;NA&gt;        &lt;NA&gt;         &lt;NA&gt;
+## 12         10:00          18:00       12:00        17:00
+## 13          &lt;NA&gt;           &lt;NA&gt;        &lt;NA&gt;         &lt;NA&gt;
+## 14          &lt;NA&gt;           &lt;NA&gt;        &lt;NA&gt;         &lt;NA&gt;
+## 15         10:00          18:00       12:00        17:00
+## 16         10:00          18:00       12:00        17:00
+## 17         10:00          18:00       12:00        17:00
+## 18         10:00          18:00       12:00        17:00
+## 19         10:00          18:00       12:00        17:00
+## 20          &lt;NA&gt;           &lt;NA&gt;        &lt;NA&gt;         &lt;NA&gt;
+## 21         10:00          18:00       12:00        17:00
+## 22         10:00          18:00       12:00        17:00</code></pre>
 </div>
 
 
