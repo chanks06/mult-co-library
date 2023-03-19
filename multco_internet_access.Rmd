@@ -1,0 +1,115 @@
+---
+title: "internet_access"
+output:
+  html_document:
+    df_print: paged
+date: "2023-03-19"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+census_key = "a8150f07baa78cbba0671478efbfa37d0d2f9aa4"
+```
+
+# Introduction 
+
+Suppose my client is the Multnomah County Library (MCL), which operates 19 branches across Portland. 
+
+Following the approval by voters in 2020 of Measure 26-211, the county is funding renovation of 8 of the 19 libraries and creating a new flagship library at 7905 SE Holgate to serve East Portland. 
+
+Our daily lives have become increasingly digital, and access to adequate information technology has become a necessity. The COVID-19 pandemic accelerated this shift, where video conferenencing became the norm for so many of us to go to school, the doctor, and work. However, not everyone has access to the internet at home.  Our library system is one solution to provide access to information technology to everyone at no cost. MCL has asked that I provide a report addressing the following questions:  
+
+-Where in Multnomah County is there the most people without broadband internet access at home? 
+-Are the libraries' locations conveient for those who need access to information technology?  
+-Who will benefit most from the new flagship library on SE Holgate? 
+
+I will use the 2021 American Community Survey to answer who how many people not have have access to the internet at home, where they live, and create visualization to present my findings to the Library Advisory Board. 
+
+
+```{r}
+library(tidyverse)
+library(maps)
+library(sf)
+library(tigris)
+library(tidycensus)
+library(tmap)
+library(leaflet)
+
+options(tigris_use_cache = TRUE)
+
+#getting access to census day with my API key 
+census_api_key(census_key, install = TRUE, overwrite = TRUE)
+
+```
+```{r}
+#grabbing variables from 2021 ACS 1-year estimates (data collected Jan 1 2021 - Dec 31 2021)
+acs_vars_2021 = load_variables(year = 2021, dataset = "acs1")
+
+#searching for variables with internet 
+acs_vars_2021 %>% filter(grepl("internet", concept, ignore.case = T)) #| grepl("computer", concept, ignore.case = T))
+
+#looks like I will need to take into account the population per tract in order to calculate percent of those without internet at home. 
+acs_vars_2021 %>% filter(grepl("population", concept, ignore.case = T))
+```
+Variables to use: 
+
+B01003_001 total population 
+B28002_013 no internet access 
+B28002_004 with broadband of any type 
+B28003_006 no computer
+B28003_004 has computer with broadband internet 
+B01003_001 total population 
+
+```{r}
+this.year = 2021
+
+#downloading census tract shapefile of multnomah county 
+or_tracts = tracts(state = 'OR', county = 'Multnomah', cb = TRUE, year = this.year)
+
+pop_and_no_internet = get_acs(geography = "tract", year=this.year,
+              state = "OR", county = "Multnomah",
+              variables = c(total_pop = "B01003_001",
+                            no_internet = "B28002_013")) %>% 
+                    mutate(AFFGEOID=paste0("1400000US", GEOID)) #creating AFFGEOID id from GEOID in order to join data to tract spatial data
+
+pop_no_int = as.data.frame(pop_and_no_internet)[,c(1,3:4)] %>% 
+    pivot_wider(names_from = variable, values_from = estimate) %>% #making the data frame tidy 
+      mutate(perc_no_int = round((no_internet/total_pop)*100,2), #creating variable that is percentage of population in tract that does not have internet
+              AFFGEOID=paste0("1400000US", GEOID))
+
+
+
+pop_no_int %>% arrange(desc(perc_no_int))
+# GEOIDs 41051005103 has estimated 17 % no internet at home, 41051010601 has almost 16% 
+
+
+#joining this ACS data with tract spatial data
+pop_no_int_tracts = geo_join(or_tracts, pop_no_int, by_sp = "AFFGEOID", by_df = "AFFGEOID")
+
+#first visualization using
+tm_shape(pop_no_int_tracts) + 
+  tm_fill("perc_no_int", style = "cont", palette = "Reds") + 
+  tm_legend(bg.color = "white", bg.alpha = 0.6, position = c("center", "top")) 
+
+#Tthe dark red tracts must be 41051005103 and 41051010601. I cannot tell where that is geographically in the county. 
+
+```
+Creating an interactive graphic using leaflet: 
+```{r}
+pal<-colorNumeric("Greens", domain=0:ceiling(max(pop_no_int_tracts$perc_no_int, na.rm=TRUE)))
+
+popup<-paste("Tract: ", as.character(substring(pop_no_int_tracts$GEOID.x, 6, 11)), "<br>",
+             "Percentage of Households without broadband internet: ", as.character(pop_no_int_tracts$perc_no_int))
+
+leaflet()%>%
+  addProviderTiles("CartoDB.Positron")%>%
+  addPolygons(data=pop_no_int_tracts,
+              fillColor= ~pal(pop_no_int_tracts$perc_no_int),
+              fillOpacity = .5,
+              weight =.5,
+              smoothFactor = 0.2,
+              popup = popup) %>% 
+  addMarkers(lat = 45.519702018355936, lng = -122.6831405693095, popup = "Multnomah County\nCentral Library") %>% 
+  addMarkers(lat = 45.582959138612935, lng = -122.68644127317535, popup = "Multnomah County Library - Kenton")
+```
+
