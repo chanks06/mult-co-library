@@ -100,20 +100,30 @@ pop_no_int %>% arrange(desc(perc_no_int))
 pop_no_int_tracts = geo_join(or_tracts, pop_no_int, by_sp = "AFFGEOID", by_df = "AFFGEOID")
 
 #first visualization using
-tm_shape(pop_no_int_tracts) + 
+map2 = tm_shape(pop_no_int_tracts) + 
   tm_fill("perc_no_int", style = "cont", palette = "Oranges", title = "") + 
   tm_style("grey") + 
   tm_legend(bg.color = "white", bg.alpha = 0.6, position = c("left", "bottom")) + 
-  tm_layout(title = "Percent of Homes in Multnomah\nCounty without Broadband Internet", 
+  tm_layout(title = "Percent of Households in Multnomah\nCounty without Broadband Internet",
             title.position = c("center", "top"),
             title.size = 1,
-            fontfamily = "sans", fontface = "bold") + 
-  tm_credits("Data source: American Community Survery 2021", fontface = "italic", align = "left") 
-  
-  
+            fontfamily = "sans", fontface = "bold") +   
+  tm_credits("Top 5 Neighborhoods    ",size = .8, position = c("RIGHT", "BOTTOM")) + 
+  tm_credits("Old Town: 17.46 %\nSW Downtown: 15.69%\nSE Downtown: 8.19%\nPiedmont: 8.14%\nHazelwood 6.91%", size = .7, position = c("RIGHT", "BOTTOM")) + 
+  tm_credits("Data source: American Community Survery 2021", size = .6, fontface = "italic", position = c("LEFT", "BOTTOM")) 
 
-#Tthe dark red tracts must be 41051005103 and 41051010601. I cannot tell where that is geographically in the county. 
+  
+pop_no_int_tracts = pop_no_int_tracts %>% 
+                      arrange(desc(perc_no_int)) %>% 
+                          mutate(name = case_when(TRACTCE == "005103" ~ "Old Town",
+                                                  TRACTCE == "010601" ~ "SW Downtown", 
+                                                  TRACTCE == "010602" ~ "SE Downtown", 
+                                                  TRACTCE == "003701" ~ "Piedmont", 
+                                                  TRACTCE == "008203" ~ "Hazelwood"))
 
+pdf(file = "~/multco_map")
+map
+while (!is.null(dev.list()))  dev.off()
 ```
 Creating an interactive graphic using leaflet: 
 
