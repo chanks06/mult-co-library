@@ -13,14 +13,14 @@ census_key = "a8150f07baa78cbba0671478efbfa37d0d2f9aa4"
 
 # Introduction 
 
-Suppose my client is the Multnomah County Library (MCL), which operates 19 library branches across Portland. 
+Suppose my client is the Multnomah County Library (MCL). Following the approval pf Measure 26-211 by voters in 2020, the county is funding renovation of 8 of the 19 libraries and creating a new flagship library at 7905 SE Holgate to serve East Portland. 
 
-Following the approval by voters in 2020 of Measure 26-211, the county is funding renovation of 8 of the 19 libraries and creating a new flagship library at 7905 SE Holgate to serve East Portlanders.
+As our daily lives have become increasingly digital, access to adequate information technology has become a necessity. The COVID-19 pandemic accelerated this shift, where video conferencing became the norm for so many of us to go to school, the doctor, and work. 
 
-As our daily lives have become increasingly digital, access to adequate information technology has become a necessity. The COVID-19 pandemic accelerated this shift, where video conferencing became the norm for so many of us to go to school, the doctor, and work. However, not everyone has access to the internet at home.  Our library system is one solution to provide access to information technology to everyone at no cost. MCL has asked that I provide a report addressing the following questions:  
+However, not everyone has access to the internet at home.  Our libraries provide access to information technology to everyone at no cost. The Multnomah County Library has asked that I provide a report addressing the following questions:  
 
--Where in Multnomah County is there the most people without broadband internet access at home? 
--Are the libraries' locations conveient for those who need access to information technology?  
+-Where in the county are there the most people without broadband internet access at home? 
+-Are the libraries' locations convenient for those who need access to information technology?  
 -Who will benefit most from the new flagship library on SE Holgate? 
 
 I used the 2021 American Community Survey to answer who how many people not have have access to the internet at home, where they live, and created visualization to present my findings to the Library Advisory Board. 
@@ -29,7 +29,7 @@ I used the 2021 American Community Survey to answer who how many people not have
 
 - Over 20,000 people in Multnomah County do not have access to broadband internet at home. 
 - The largest concentrations of people without internet at home are in Downtown (15.6%) and Old Town Portland (17.5%), followed by the Piedmont Neighborhood (8%). 
-- With the Central Library closed for renovations through the end of 2023 at the earliest, there is currently no access to the internet in Downtown Portland, whose residents benefit the most from    MCL's technological resources. 
+- With the Central Library closed for renovations through the end of 2023 at the earliest, there is currently no access to the internet in Downtown Portland, whose residents benefit the most from the library's technological resources. 
 - MCL plans to open a pop-up technology resource center at 510 SE Washington, however no opening date has been announced. 
 
 
@@ -42,6 +42,7 @@ library(tidycensus)
 library(tmap)
 library(leaflet)
 ```
+
 ```{r, include = F}
 options(tigris_use_cache = TRUE)
 #getting access to census day with my API key 
@@ -100,8 +101,16 @@ pop_no_int_tracts = geo_join(or_tracts, pop_no_int, by_sp = "AFFGEOID", by_df = 
 
 #first visualization using
 tm_shape(pop_no_int_tracts) + 
-  tm_fill("perc_no_int", style = "cont", palette = "Reds") + 
-  tm_legend(bg.color = "white", bg.alpha = 0.6, position = c("center", "top")) 
+  tm_fill("perc_no_int", style = "cont", palette = "Oranges", title = "") + 
+  tm_style("grey") + 
+  tm_legend(bg.color = "white", bg.alpha = 0.6, position = c("left", "bottom")) + 
+  tm_layout(title = "Percent of Homes in Multnomah\nCounty without Broadband Internet", 
+            title.position = c("center", "top"),
+            title.size = 1,
+            fontfamily = "sans", fontface = "bold") + 
+  tm_credits("Data source: American Community Survery 2021", fontface = "italic", align = "left") 
+  
+  
 
 #Tthe dark red tracts must be 41051005103 and 41051010601. I cannot tell where that is geographically in the county. 
 
