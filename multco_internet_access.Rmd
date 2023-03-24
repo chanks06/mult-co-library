@@ -1,7 +1,8 @@
 ---
 title: "Internet Access in Multnomah County"
-author: "Charles Hanks" 
+author: "Charles Hanks"
 output:
+  pdf_document: default
   html_document:
     df_print: paged
 ---
@@ -19,18 +20,23 @@ As our daily lives have become increasingly digital, access to adequate informat
 
 However, not everyone has access to the internet at home.  Our libraries provide access to information technology to everyone at no cost. The Multnomah County Library has asked that I provide a report addressing the following questions:  
 
--Where in the county are there the most people without broadband internet access at home? 
--Are the libraries' locations convenient for those who need access to information technology?  
--Who will benefit most from the new flagship library on SE Holgate? 
+* Where in the county are there the most people without broadband internet access at home? 
+* Are the libraries' locations convenient for those who need access to information technology?  
+* Who will benefit most from the new flagship library on SE Holgate? 
 
 I used the 2021 American Community Survey to answer who how many people not have have access to the internet at home, where they live, and created visualization to present my findings to the Library Advisory Board. 
 
 ## My Findings 
 
-- Over 20,000 people in Multnomah County do not have access to broadband internet at home. 
-- The largest concentrations of people without internet at home are in Downtown (15.6%) and Old Town Portland (17.5%), followed by the Piedmont Neighborhood (8%). 
-- With the Central Library closed for renovations through the end of 2023 at the earliest, there is currently no access to the internet in Downtown Portland, whose residents benefit the most from the library's technological resources. 
-- MCL plans to open a pop-up technology resource center at 510 SE Washington, however no opening date has been announced. 
+* Over 20,000 people in Multnomah County do not have access to broadband internet at home. 
+* The largest concentrations of people without internet at home are in Downtown (15.6%) and Old Town Portland (17.5%), followed by the Piedmont Neighborhood (8%). 
+* With the Central Library closed for renovations through the end of 2023 at the earliest, there is currently no access to the internet in Downtown Portland, whose residents benefit the most from the library's technological resources. 
+* MCL plans to open a pop-up technology resource center at 510 SE Washington, however no opening date has been announced. 
+
+## Deliverables: 
+
+* [Static Map of Multnomah County](https://github.com/chanks06/chanks06.github.io/blob/main/multco_internet_map.pdf)
+* [Interactive Map of Multnomah County](https://github.com/chanks06/chanks06.github.io/blob/main/multco_leaflet.html)
 
 Loading packages:  
 ```{r}

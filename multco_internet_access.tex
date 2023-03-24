@@ -1,0 +1,451 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Internet Access in Multnomah County},
+  pdfauthor={Charles Hanks},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Internet Access in Multnomah County}
+\author{Charles Hanks}
+\date{}
+
+\begin{document}
+\maketitle
+
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+Suppose my client is the Multnomah County Library (MCL). Following the
+approval pf Measure 26-211 by voters in 2020, the county is funding
+renovation of 8 of the 19 libraries and creating a new flagship library
+at 7905 SE Holgate to serve East Portland.
+
+As our daily lives have become increasingly digital, access to adequate
+information technology has become a necessity. The COVID-19 pandemic
+accelerated this shift, where video conferencing became the norm for so
+many of us to go to school, the doctor, and work.
+
+However, not everyone has access to the internet at home. Our libraries
+provide access to information technology to everyone at no cost. The
+Multnomah County Library has asked that I provide a report addressing
+the following questions:
+
+\begin{itemize}
+\tightlist
+\item
+  Where in the county are there the most people without broadband
+  internet access at home?
+\item
+  Are the libraries' locations convenient for those who need access to
+  information technology?\\
+\item
+  Who will benefit most from the new flagship library on SE Holgate?
+\end{itemize}
+
+I used the 2021 American Community Survey to answer who how many people
+not have have access to the internet at home, where they live, and
+created visualization to present my findings to the Library Advisory
+Board.
+
+\hypertarget{my-findings}{%
+\subsection{My Findings}\label{my-findings}}
+
+\begin{itemize}
+\tightlist
+\item
+  Over 20,000 people in Multnomah County do not have access to broadband
+  internet at home.
+\item
+  The largest concentrations of people without internet at home are in
+  Downtown (15.6\%) and Old Town Portland (17.5\%), followed by the
+  Piedmont Neighborhood (8\%).
+\item
+  With the Central Library closed for renovations through the end of
+  2023 at the earliest, there is currently no access to the internet in
+  Downtown Portland, whose residents benefit the most from the library's
+  technological resources.
+\item
+  MCL plans to open a pop-up technology resource center at 510 SE
+  Washington, however no opening date has been announced.
+\end{itemize}
+
+\hypertarget{deliverables}{%
+\subsection{Deliverables:}\label{deliverables}}
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://github.com/chanks06/chanks06.github.io/blob/main/multco_internet_map.pdf}{Static
+  Map of Multnomah County}
+\item
+  \href{https://github.com/chanks06/chanks06.github.io/blob/main/multco_leaflet.html}{Interactive
+  Map of Multnomah County}
+\end{itemize}
+
+Loading packages:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## -- Attaching packages --------------------------------------- tidyverse 1.3.2 --
+## v ggplot2 3.4.0      v purrr   0.3.5 
+## v tibble  3.1.8      v dplyr   1.0.10
+## v tidyr   1.2.1      v stringr 1.4.1 
+## v readr   2.1.2      v forcats 0.5.2 
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(maps)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'maps'
+## 
+## The following object is masked from 'package:purrr':
+## 
+##     map
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(sf)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Linking to GEOS 3.10.2, GDAL 3.4.2, PROJ 8.2.1; sf_use_s2() is TRUE
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tigris)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## To enable caching of data, set `options(tigris_use_cache = TRUE)`
+## in your R script or .Rprofile.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidycensus)}
+\FunctionTok{library}\NormalTok{(tmap)}
+\FunctionTok{library}\NormalTok{(leaflet)}
+\FunctionTok{library}\NormalTok{(htmltools)}
+\FunctionTok{library}\NormalTok{(htmlwidgets)}
+\end{Highlighting}
+\end{Shaded}
+
+Authenticating US Census API key:
+
+Loading the American Community Survey data from the Census bureau:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#grabbing variables from 2021 ACS 1{-}year estimates (data collected Jan 1 2021 {-} Dec 31 2021)}
+\NormalTok{acs\_vars\_2021 }\OtherTok{=} \FunctionTok{load\_variables}\NormalTok{(}\AttributeTok{year =} \DecValTok{2021}\NormalTok{, }\AttributeTok{dataset =} \StringTok{"acs1"}\NormalTok{)}
+
+\CommentTok{\#searching for variables with internet }
+\NormalTok{acs\_vars\_2021 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(}\FunctionTok{grepl}\NormalTok{(}\StringTok{"internet"}\NormalTok{, concept, }\AttributeTok{ignore.case =}\NormalTok{ T)) }\CommentTok{\#| grepl("computer", concept, ignore.case = T))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 203 x 3
+##    name       label                                                      concept
+##    <chr>      <chr>                                                      <chr>  
+##  1 B28002_001 Estimate!!Total:                                           PRESEN~
+##  2 B28002_002 Estimate!!Total:!!With an Internet subscription            PRESEN~
+##  3 B28002_003 Estimate!!Total:!!With an Internet subscription!!Dial-up ~ PRESEN~
+##  4 B28002_004 Estimate!!Total:!!With an Internet subscription!!Broadban~ PRESEN~
+##  5 B28002_005 Estimate!!Total:!!With an Internet subscription!!Cellular~ PRESEN~
+##  6 B28002_006 Estimate!!Total:!!With an Internet subscription!!Cellular~ PRESEN~
+##  7 B28002_007 Estimate!!Total:!!With an Internet subscription!!Broadban~ PRESEN~
+##  8 B28002_008 Estimate!!Total:!!With an Internet subscription!!Broadban~ PRESEN~
+##  9 B28002_009 Estimate!!Total:!!With an Internet subscription!!Satellit~ PRESEN~
+## 10 B28002_010 Estimate!!Total:!!With an Internet subscription!!Satellit~ PRESEN~
+## # ... with 193 more rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#looks like I will need to take into account the population per tract in order to calculate percent of those without internet at home. }
+\NormalTok{acs\_vars\_2021 }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(}\FunctionTok{grepl}\NormalTok{(}\StringTok{"population"}\NormalTok{, concept, }\AttributeTok{ignore.case =}\NormalTok{ T))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 15,494 x 3
+##    name       label                                                      concept
+##    <chr>      <chr>                                                      <chr>  
+##  1 B01003_001 Estimate!!Total                                            TOTAL ~
+##  2 B05006_001 Estimate!!Total:                                           PLACE ~
+##  3 B05006_002 Estimate!!Total:!!Europe:                                  PLACE ~
+##  4 B05006_003 Estimate!!Total:!!Europe:!!Northern Europe:                PLACE ~
+##  5 B05006_004 Estimate!!Total:!!Europe:!!Northern Europe:!!Denmark       PLACE ~
+##  6 B05006_005 Estimate!!Total:!!Europe:!!Northern Europe:!!Ireland       PLACE ~
+##  7 B05006_006 Estimate!!Total:!!Europe:!!Northern Europe:!!Norway        PLACE ~
+##  8 B05006_007 Estimate!!Total:!!Europe:!!Northern Europe:!!Sweden        PLACE ~
+##  9 B05006_008 Estimate!!Total:!!Europe:!!Northern Europe:!!United Kingd~ PLACE ~
+## 10 B05006_009 Estimate!!Total:!!Europe:!!Northern Europe:!!United Kingd~ PLACE ~
+## # ... with 15,484 more rows
+\end{verbatim}
+
+Potenial variables to use:
+
+B01003\_001 total population B28002\_013 no internet access B28002\_004
+with broadband of any type B28003\_006 no computer B28003\_004 has
+computer with broadband internet B01003\_001 total population
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{this.year }\OtherTok{=} \DecValTok{2021}
+
+\CommentTok{\#downloading census tract shapefile of multnomah county }
+\NormalTok{or\_tracts }\OtherTok{=} \FunctionTok{tracts}\NormalTok{(}\AttributeTok{state =} \StringTok{\textquotesingle{}OR\textquotesingle{}}\NormalTok{, }\AttributeTok{county =} \StringTok{\textquotesingle{}Multnomah\textquotesingle{}}\NormalTok{, }\AttributeTok{cb =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{year =}\NormalTok{ this.year)}
+
+\NormalTok{pop\_and\_no\_internet }\OtherTok{=} \FunctionTok{get\_acs}\NormalTok{(}\AttributeTok{geography =} \StringTok{"tract"}\NormalTok{, }\AttributeTok{year=}\NormalTok{this.year,}
+              \AttributeTok{state =} \StringTok{"OR"}\NormalTok{, }\AttributeTok{county =} \StringTok{"Multnomah"}\NormalTok{,}
+              \AttributeTok{variables =} \FunctionTok{c}\NormalTok{(}\AttributeTok{total\_pop =} \StringTok{"B01003\_001"}\NormalTok{,}
+                            \AttributeTok{no\_internet =} \StringTok{"B28002\_013"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+                    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{AFFGEOID=}\FunctionTok{paste0}\NormalTok{(}\StringTok{"1400000US"}\NormalTok{, GEOID)) }\CommentTok{\#creating AFFGEOID id from GEOID in order to join data to tract spatial data}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Getting data from the 2017-2021 5-year ACS
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pop\_no\_int }\OtherTok{=} \FunctionTok{as.data.frame}\NormalTok{(pop\_and\_no\_internet)[,}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\SpecialCharTok{:}\DecValTok{4}\NormalTok{)] }\SpecialCharTok{\%\textgreater{}\%} 
+    \FunctionTok{pivot\_wider}\NormalTok{(}\AttributeTok{names\_from =}\NormalTok{ variable, }\AttributeTok{values\_from =}\NormalTok{ estimate) }\SpecialCharTok{\%\textgreater{}\%} \CommentTok{\#making the data frame tidy }
+      \FunctionTok{mutate}\NormalTok{(}\AttributeTok{perc\_no\_int =} \FunctionTok{round}\NormalTok{((no\_internet}\SpecialCharTok{/}\NormalTok{total\_pop)}\SpecialCharTok{*}\DecValTok{100}\NormalTok{,}\DecValTok{2}\NormalTok{), }\CommentTok{\#creating variable that is percentage of population in tract that does not have internet}
+              \AttributeTok{AFFGEOID=}\FunctionTok{paste0}\NormalTok{(}\StringTok{"1400000US"}\NormalTok{, GEOID))}
+
+\CommentTok{\#summary data }
+\NormalTok{pop\_no\_int }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{drop\_na}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{summarize}\NormalTok{(}\AttributeTok{sum\_pop =} \FunctionTok{sum}\NormalTok{(total\_pop), }\AttributeTok{sum\_no\_internet =} \FunctionTok{sum}\NormalTok{(no\_internet))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 2
+##   sum_pop sum_no_internet
+##     <dbl>           <dbl>
+## 1  810011           20800
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{pop\_no\_int }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(perc\_no\_int))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 197 x 5
+##    GEOID       total_pop no_internet perc_no_int AFFGEOID            
+##    <chr>           <dbl>       <dbl>       <dbl> <chr>               
+##  1 41051005103      2302         402       17.5  1400000US41051005103
+##  2 41051010601      1530         240       15.7  1400000US41051010601
+##  3 41051010602      1966         161        8.19 1400000US41051010602
+##  4 41051003701      4360         355        8.14 1400000US41051003701
+##  5 41051008203      5923         409        6.91 1400000US41051008203
+##  6 41051010410      4430         296        6.68 1400000US41051010410
+##  7 41051010001      6295         408        6.48 1400000US41051010001
+##  8 41051002702      3600         229        6.36 1400000US41051002702
+##  9 41051002402      3178         199        6.26 1400000US41051002402
+## 10 41051005102      3013         182        6.04 1400000US41051005102
+## # ... with 187 more rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# GEOIDs 41051005103 has estimated 17 \% no internet at home, 41051010601 has almost 16\% }
+
+
+\CommentTok{\#joining this ACS data with tract spatial data}
+\NormalTok{pop\_no\_int\_tracts }\OtherTok{=} \FunctionTok{geo\_join}\NormalTok{(or\_tracts, pop\_no\_int, }\AttributeTok{by\_sp =} \StringTok{"AFFGEOID"}\NormalTok{, }\AttributeTok{by\_df =} \StringTok{"AFFGEOID"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: We recommend using the dplyr::*_join() family of functions instead.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: `group_by_()` was deprecated in dplyr 0.7.0.
+## i Please use `group_by()` instead.
+## i See vignette('programming') for more help
+## i The deprecated feature was likely used in the dplyr package.
+##   Please report the issue at <]8;;https://github.com/tidyverse/dplyr/issueshttps://github.com/tidyverse/dplyr/issues]8;;>.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#first visualization using}
+\NormalTok{map2 }\OtherTok{=} \FunctionTok{tm\_shape}\NormalTok{(pop\_no\_int\_tracts) }\SpecialCharTok{+} 
+  \FunctionTok{tm\_fill}\NormalTok{(}\StringTok{"perc\_no\_int"}\NormalTok{, }\AttributeTok{style =} \StringTok{"cont"}\NormalTok{, }\AttributeTok{palette =} \StringTok{"Oranges"}\NormalTok{, }\AttributeTok{title =} \StringTok{""}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{tm\_style}\NormalTok{(}\StringTok{"grey"}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{tm\_legend}\NormalTok{(}\AttributeTok{bg.color =} \StringTok{"white"}\NormalTok{, }\AttributeTok{bg.alpha =} \FloatTok{0.6}\NormalTok{, }\AttributeTok{position =} \FunctionTok{c}\NormalTok{(}\StringTok{"left"}\NormalTok{, }\StringTok{"bottom"}\NormalTok{)) }\SpecialCharTok{+} 
+  \FunctionTok{tm\_layout}\NormalTok{(}\AttributeTok{title =} \StringTok{"Percent of Households in Multnomah}\SpecialCharTok{\textbackslash{}n}\StringTok{County without Broadband Internet"}\NormalTok{,}
+            \AttributeTok{title.position =} \FunctionTok{c}\NormalTok{(}\StringTok{"center"}\NormalTok{, }\StringTok{"top"}\NormalTok{),}
+            \AttributeTok{title.size =} \DecValTok{1}\NormalTok{,}
+            \AttributeTok{fontfamily =} \StringTok{"sans"}\NormalTok{, }\AttributeTok{fontface =} \StringTok{"bold"}\NormalTok{) }\SpecialCharTok{+}   
+  \FunctionTok{tm\_credits}\NormalTok{(}\StringTok{"Top 5 Neighborhoods    "}\NormalTok{,}\AttributeTok{size =}\NormalTok{ .}\DecValTok{8}\NormalTok{, }\AttributeTok{position =} \FunctionTok{c}\NormalTok{(}\StringTok{"RIGHT"}\NormalTok{, }\StringTok{"BOTTOM"}\NormalTok{)) }\SpecialCharTok{+} 
+  \FunctionTok{tm\_credits}\NormalTok{(}\StringTok{"Old Town: 17.46 \%}\SpecialCharTok{\textbackslash{}n}\StringTok{SW Downtown: 15.69\%}\SpecialCharTok{\textbackslash{}n}\StringTok{SE Downtown: 8.19\%}\SpecialCharTok{\textbackslash{}n}\StringTok{Piedmont: 8.14\%}\SpecialCharTok{\textbackslash{}n}\StringTok{Hazelwood 6.91\%"}\NormalTok{, }\AttributeTok{size =}\NormalTok{ .}\DecValTok{7}\NormalTok{, }\AttributeTok{position =} \FunctionTok{c}\NormalTok{(}\StringTok{"RIGHT"}\NormalTok{, }\StringTok{"BOTTOM"}\NormalTok{)) }\SpecialCharTok{+} 
+  \FunctionTok{tm\_credits}\NormalTok{(}\StringTok{"Data source: American Community Survery 2021"}\NormalTok{, }\AttributeTok{size =}\NormalTok{ .}\DecValTok{6}\NormalTok{, }\AttributeTok{fontface =} \StringTok{"italic"}\NormalTok{, }\AttributeTok{position =} \FunctionTok{c}\NormalTok{(}\StringTok{"LEFT"}\NormalTok{, }\StringTok{"BOTTOM"}\NormalTok{)) }
+
+  
+\NormalTok{pop\_no\_int\_tracts }\OtherTok{=}\NormalTok{ pop\_no\_int\_tracts }\SpecialCharTok{\%\textgreater{}\%} 
+                      \FunctionTok{arrange}\NormalTok{(}\FunctionTok{desc}\NormalTok{(perc\_no\_int)) }\SpecialCharTok{\%\textgreater{}\%} 
+                          \FunctionTok{mutate}\NormalTok{(}\AttributeTok{name =} \FunctionTok{case\_when}\NormalTok{(TRACTCE }\SpecialCharTok{==} \StringTok{"005103"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Old Town"}\NormalTok{,}
+\NormalTok{                                                  TRACTCE }\SpecialCharTok{==} \StringTok{"010601"} \SpecialCharTok{\textasciitilde{}} \StringTok{"SW Downtown"}\NormalTok{, }
+\NormalTok{                                                  TRACTCE }\SpecialCharTok{==} \StringTok{"010602"} \SpecialCharTok{\textasciitilde{}} \StringTok{"SE Downtown"}\NormalTok{, }
+\NormalTok{                                                  TRACTCE }\SpecialCharTok{==} \StringTok{"003701"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Piedmont"}\NormalTok{, }
+\NormalTok{                                                  TRACTCE }\SpecialCharTok{==} \StringTok{"008203"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Hazelwood"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+Creating an interactive graphic using leaflet:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#pal\textless{}{-}colorNumeric("Reds", domain=0:ceiling(max(pop\_no\_int\_tracts$perc\_no\_int, na.rm=TRUE)))}
+
+\CommentTok{\#popup\textless{}{-}paste("Tract: ", as.character(substring(pop\_no\_int\_tracts$GEOID.x, 6, 11)), "\textless{}br\textgreater{}",}
+             \CommentTok{\#"Percentage of Households without broadband internet: ", as.character(pop\_no\_int\_tracts$perc\_no\_int))}
+
+
+
+\CommentTok{\#multco\_leaflet = leaflet()\%\textgreater{}\%}
+  \CommentTok{\# addProviderTiles("CartoDB.Positron")\%\textgreater{}\%}
+  \CommentTok{\# addPolygons(data=pop\_no\_int\_tracts,}
+  \CommentTok{\#             fillColor= \textasciitilde{}pal(pop\_no\_int\_tracts$perc\_no\_int),}
+  \CommentTok{\#             fillOpacity = .5,}
+  \CommentTok{\#             weight =.5,}
+  \CommentTok{\#             smoothFactor = 0.2,}
+  \CommentTok{\#             popup = popup) \%\textgreater{}\%}
+  \CommentTok{\# addMarkers(lat = 45.519702018355936, lng = {-}122.6831405693095, popup = "Multnomah County Central Library {-} 801 SE 10th Ave (closed for construction)") \%\textgreater{}\%}
+  \CommentTok{\# addMarkers(lat = 45.582959138612935, lng = {-}122.68644127317535, popup = "Multnomah County Kenton Library {-} 8226 NE Denver Ave") \%\textgreater{}\%}
+  \CommentTok{\# addMarkers(lat = 45.490583320668875, lng =  {-}122.582268235629, popup = "Multnomah Count Holgate LIbrary {-} 7905 SE Holgate Blvd (closed for construction)") \%\textgreater{}\%}
+  \CommentTok{\# addControl(}
+  \CommentTok{\#   position = "bottomright",}
+  \CommentTok{\#   html = "\textless{}h4\textgreater{} Percent of Households without Access to the Internet in Multnomah County\textless{}/h4\textgreater{}"}
+  \CommentTok{\# )}
+
+\CommentTok{\#exporting interactive map as html: }
+\CommentTok{\#saveWidget(multco\_leaflet, file ="multco\_leaflet.html")}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}
