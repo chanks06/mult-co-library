@@ -14,7 +14,7 @@ census_key = "a8150f07baa78cbba0671478efbfa37d0d2f9aa4"
 
 # Introduction 
 
-Suppose my client is the Multnomah County Library (MCL). Following the approval pf Measure 26-211 by voters in 2020, the county is funding renovation of 8 of the 19 libraries and creating a new flagship library at 7905 SE Holgate to serve East Portland. 
+Suppose my client is the Multnomah County Library (MCL). Following the approval of Measure 26-211 by voters in 2020, the county is funding renovation of 8 of the 19 libraries and creating a new flagship library at 7905 SE Holgate to serve East Portland. 
 
 As our daily lives have become increasingly digital, access to adequate information technology has become a necessity. The COVID-19 pandemic accelerated this shift, where video conferencing became the norm for so many of us to go to school, the doctor, and work. 
 
