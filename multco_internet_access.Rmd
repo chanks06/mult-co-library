@@ -32,7 +32,7 @@ I used the 2021 American Community Survey to answer who how many people not have
 - With the Central Library closed for renovations through the end of 2023 at the earliest, there is currently no access to the internet in Downtown Portland, whose residents benefit the most from the library's technological resources. 
 - MCL plans to open a pop-up technology resource center at 510 SE Washington, however no opening date has been announced. 
 
-
+Loading packages:  
 ```{r}
 library(tidyverse)
 library(maps)
@@ -41,8 +41,11 @@ library(tigris)
 library(tidycensus)
 library(tmap)
 library(leaflet)
+library(htmltools)
+library(htmlwidgets)
 ```
 
+Authenticating US Census API key: 
 ```{r, include = F}
 options(tigris_use_cache = TRUE)
 #getting access to census day with my API key 
@@ -51,7 +54,6 @@ census_api_key(census_key, install = TRUE, overwrite = TRUE)
 
 
 Loading the American Community Survey data from the Census bureau: 
-
 ```{r}
 #grabbing variables from 2021 ACS 1-year estimates (data collected Jan 1 2021 - Dec 31 2021)
 acs_vars_2021 = load_variables(year = 2021, dataset = "acs1")
@@ -121,12 +123,9 @@ pop_no_int_tracts = pop_no_int_tracts %>%
                                                   TRACTCE == "003701" ~ "Piedmont", 
                                                   TRACTCE == "008203" ~ "Hazelwood"))
 
-pdf(file = "~/multco_map")
-map
-while (!is.null(dev.list()))  dev.off()
+
 ```
 Creating an interactive graphic using leaflet: 
-
 ```{r}
 pal<-colorNumeric("Reds", domain=0:ceiling(max(pop_no_int_tracts$perc_no_int, na.rm=TRUE)))
 
@@ -136,7 +135,7 @@ popup<-paste("Tract: ", as.character(substring(pop_no_int_tracts$GEOID.x, 6, 11)
 library(leafletCN)
 
 
-leaflet()%>%
+multco_leaflet = leaflet()%>%
   addProviderTiles("CartoDB.Positron")%>%
   addPolygons(data=pop_no_int_tracts,
               fillColor= ~pal(pop_no_int_tracts$perc_no_int),
@@ -144,12 +143,15 @@ leaflet()%>%
               weight =.5,
               smoothFactor = 0.2,
               popup = popup) %>% 
-  addMarkers(lat = 45.519702018355936, lng = -122.6831405693095, popup = "Multnomah County\nCentral Library") %>% 
-  addMarkers(lat = 45.582959138612935, lng = -122.68644127317535, popup = "Multnomah County Library - Kenton") %>% 
+  addMarkers(lat = 45.519702018355936, lng = -122.6831405693095, popup = "Multnomah County Central Library - 801 SE 10th Ave (closed for construction)") %>% 
+  addMarkers(lat = 45.582959138612935, lng = -122.68644127317535, popup = "Multnomah County Kenton Library - 8226 NE Denver Ave") %>% 
+  addMarkers(lat = 45.490583320668875, lng =  -122.582268235629, popup = "Multnomah Count Holgate LIbrary - 7905 SE Holgate Blvd (closed for construction)") %>%
   addControl(
     position = "bottomright", 
-    html = "<h4>Households without Access to the Internet in Multnomah County</h4>"
+    html = "<h4> Percent of Households without Access to the Internet in Multnomah County</h4>"
   )
-  
+
+#exporting interactive map as html: 
+saveWidget(multco_leaflet, file ="multco_leaflet.html")
 ```
 
